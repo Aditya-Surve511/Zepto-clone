@@ -12,7 +12,7 @@
 .category-tabs button.selected { border-bottom-color: #e0bd00; color: #222; font-weight: 700; }
 .welcome { min-height: 220px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; margin: 24px 0 32px; padding: 25px 8%; background: #f8f5df; }
 .welcome p { margin: 0 0 10px; color: #687347; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
-.welcome h1 { max-width: 470px; margin: 0 0 10px; color: #2e402e; font-size: clamp(26px, 4vw, 40px); line-height: 1.15; }
+.welcome h1 { max-width: 470px; margin: 0 0 10px; color: #2e402e; font-size: 36px; line-height: 1.15; }
 .welcome span { color: #666; font-size: 14px; }
 .welcome img { width: 135px; height: 160px; object-fit: contain; }
 .catalog { padding-bottom: 45px; }
@@ -47,6 +47,9 @@
 .quantity-controls .remove-button { margin-left: 5px; border: 0; color: #a33; font-size: 11px; }
 .cart-total { display: flex; justify-content: space-between; padding: 17px 0; border-top: 1px solid #eee; }
 .checkout-button { min-height: 45px; }
+@media (max-width: 1000px) {
+  .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 @media (max-width: 760px) {
   .store { padding: 0 16px; }
   .header { flex-wrap: wrap; gap: 12px; padding: 14px 0; }
@@ -55,9 +58,28 @@
   .search { order: 1; width: 100%; }
   .category-tabs { gap: 18px; }
   .welcome { min-height: 185px; margin-top: 17px; padding: 20px; }
+  .welcome h1 { font-size: 30px; }
   .welcome img { width: 90px; height: 120px; }
   .welcome span { font-size: 12px; }
   .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .product-card { padding: 9px; }
   .product-image { height: 140px; }
+}
+@media (max-width: 460px) {
+  .store { padding: 0 12px; }
+  .header { gap: 8px; }
+  .logo { width: 70px; }
+  .address { font-size: 10px; }
+  .open-cart { padding: 10px 12px; }
+  .welcome { min-height: 165px; gap: 8px; padding: 16px; }
+  .welcome h1 { max-width: 230px; font-size: 25px; }
+  .welcome span { font-size: 11px; }
+  .welcome img { width: 70px; height: 96px; }
+  .product-grid { gap: 9px; }
+  .product-card { padding: 8px; }
+  .product-image { height: 125px; }
+  .product-footer button { padding: 8px 10px; }
+  .cart-panel { padding: 16px; }
+  .cart-item { gap: 9px; }
+  .quantity-controls { gap: 6px; }
 }

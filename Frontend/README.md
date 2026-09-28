@@ -12,7 +12,7 @@ npm run dev
 
 ## Frontend notes
 
-- Products and categories are loaded with `fetch` and cached with TanStack Query.
+- Products and categories are loaded with `fetch` and cached with TanStack Query. FakeStore API is the primary source; DummyJSON is used if FakeStore is unavailable.
 - React Context manages the cart, and `localStorage` keeps it after a page reload.
 - Category tabs and the search box filter the products.
 - FakeStore API prices are shown in USD.

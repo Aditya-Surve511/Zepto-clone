@@ -54,9 +54,38 @@ export function CartProvider({ children }) {
 }
 
 async function getData(url) {
-  const response = await fetch(`https://fakestoreapi.com${url}`)
+  const response = await fetch(url)
   if (!response.ok) throw new Error('Unable to load store data')
   return response.json()
+}
+
+async function getProducts() {
+  try {
+    return {
+      products: await getData('https://fakestoreapi.com/products'),
+      usingBackup: false,
+    }
+  } catch {
+    const data = await getData('https://dummyjson.com/products?limit=30')
+    return {
+      products: data.products.map((product) => ({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        category: product.category,
+        image: product.thumbnail,
+      })),
+      usingBackup: true,
+    }
+  }
+}
+
+async function getCategories() {
+  try {
+    return await getData('https://fakestoreapi.com/products/categories')
+  } catch {
+    return getData('https://dummyjson.com/products/category-list')
+  }
 }
 
 function ProductCard({ product, addToCart }) {
@@ -127,15 +156,15 @@ export default function Home() {
 
   const productsQuery = useQuery({
     queryKey: ['products'],
-    queryFn: () => getData('/products'),
+    queryFn: getProducts,
   })
   const categoriesQuery = useQuery({
     queryKey: ['categories'],
-    queryFn: () => getData('/products/categories'),
+    queryFn: getCategories,
   })
 
-  const products = productsQuery.data || []
-  const categories = categoriesQuery.data || []
+  const products = productsQuery.data?.products || []
+  const categories = categoriesQuery.data || [...new Set(products.map((product) => product.category))]
   const visibleProducts = products.filter((product) => {
     const matchesCategory = category === 'all' || product.category === category
     const matchesSearch = product.title.toLowerCase().includes(search.toLowerCase())
@@ -189,10 +218,16 @@ export default function Home() {
             <span>{visibleProducts.length} items</span>
           </div>
 
+          {productsQuery.data?.usingBackup && (
+            <p className="catalog-note" role="status">
+              FakeStore is unavailable, so backup products are showing.
+            </p>
+          )}
+
           {productsQuery.isLoading && <p className="message">Loading products...</p>}
           {productsQuery.isError && (
             <div className="message">
-              <p>Could not load products.</p>
+              <p>Could not load products from either catalog.</p>
               <button onClick={() => {
                 productsQuery.refetch()
                 categoriesQuery.refetch()
